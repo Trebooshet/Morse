@@ -23,11 +23,11 @@ body {
 }
 
 button {
-    height: 70px;
+    height: 60px;
     transform-origin: 50% 50%;
     margin-top: 10vh;
     background-color: rgb(93, 188, 144);
-    border-radius: 20px;
+    border-radius: 25px;
 }
 
 
