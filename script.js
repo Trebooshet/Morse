@@ -3,8 +3,8 @@ let output = document.getElementById('output');
 let translateButton = document.getElementById('translate_button');
 let body = document.getElementById('body');
 let index = 0;
-let dotSound = new Audio('dot2soundpip.mp3')
-let dashSound = new Audio('dashsoundpip.mp3')
+let dotSound = new Audio('dot.mp3')
+let dashSound = new Audio('dash.mp3')
 const symbols = [
     {symbol: 'a', morseSymbol: '.-'},
     {symbol: 'b', morseSymbol: '-..'},
@@ -107,14 +107,14 @@ async function readMorse(morseText) {
     if (char === '.') {
         body.style.backgroundImage = "url('2.jpg')";
         dotSound.play();
-        delay = 400; // Пауза для точки
+        delay = 200; // Пауза для точки
     } else if (char === '-') {
         body.style.backgroundImage = "url('2.jpg')";
         dashSound.play();
-        delay = 1200; // Пауза для тире
+        delay = 600; // Пауза для тире
     } else if (char === ' ') {
         body.style.backgroundImage = "url('1.jpg')";
-        delay = 2800; // Пауза для пробела
+        delay = 1400; // Пауза для пробела
     }
 
 
@@ -129,7 +129,7 @@ async function readMorse(morseText) {
     index++; // Увеличиваем индекс
 
     // Запуск функции снова, но с задержкой между символами
-    await sleep(400); // Ожидаем перед тем как вызвать следующий символ
+    await sleep(200); // Ожидаем перед тем как вызвать следующий символ
     readMorse(morseText);
     
 }
