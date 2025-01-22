@@ -1,6 +1,7 @@
 let input = document.getElementById('input');
 let output = document.getElementById('output');
 let translateButton = document.getElementById('translate_button');
+let clearButton = document.getElementById('clear_button');
 let body = document.getElementById('body');
 let stopMorseReading = false;
 let index = 0;
