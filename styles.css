@@ -22,14 +22,18 @@ body {
     background-repeat: no-repeat;
 }
 
-button {
-    height: 60px;
+#translate_button {
+    height: 70px;
     transform-origin: 50% 50%;
-    margin-top: 10vh;
     background-color: rgb(93, 188, 144);
-    color: black;
-    border-radius: 25px;
-    border: 1px solid black;
+    border-radius: 40px;
+}
+
+#clear_button {
+    height: 70px;
+    transform-origin: 50% 50%;
+    background-color: rgb(171, 188, 93);
+    border-radius: 40px;
 }
 
 
