@@ -29,6 +29,7 @@ button {
     background-color: rgb(93, 188, 144);
     color: black;
     border-radius: 25px;
+    border: 1px solid black;
 }
 
 
