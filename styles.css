@@ -26,14 +26,21 @@ body {
     height: 70px;
     transform-origin: 50% 50%;
     background-color: rgb(93, 188, 144);
-    border-radius: 40px;
+    border-radius: 20px;
+    border: 1px solid black;
+    color: black;
+    margin-top: 70px;
+    
 }
 
 #clear_button {
     height: 70px;
     transform-origin: 50% 50%;
     background-color: rgb(171, 188, 93);
-    border-radius: 40px;
+    border-radius: 20px;
+    border: 1px solid black;
+    color: black;
+    margin-top: 70px;
 }
 
 
