@@ -27,6 +27,7 @@ button {
     transform-origin: 50% 50%;
     margin-top: 10vh;
     background-color: rgb(93, 188, 144);
+    color: black;
     border-radius: 25px;
 }
 
