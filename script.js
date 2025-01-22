@@ -3,7 +3,7 @@ let output = document.getElementById('output');
 let translateButton = document.getElementById('translate_button');
 let body = document.getElementById('body');
 let index = 0;
-let dotSound = new Audio('dotsoundpip.mp3')
+let dotSound = new Audio('dot2soundpip.mp3')
 let dashSound = new Audio('dashsoundpip.mp3')
 const symbols = [
     {symbol: 'a', morseSymbol: '.-'},
