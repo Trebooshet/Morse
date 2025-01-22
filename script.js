@@ -2,9 +2,11 @@ let input = document.getElementById('input');
 let output = document.getElementById('output');
 let translateButton = document.getElementById('translate_button');
 let body = document.getElementById('body');
+let stopMorseReading = false;
 let index = 0;
-let dotSound = new Audio('5soundpip.mp3')
-let dashSound = new Audio('3soundpip.mp3')
+/*let dotSound = new Audio('5soundpip.mp3')
+let dashSound = new Audio('3soundpip.mp3')*/
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 const symbols = [
     {symbol: 'a', morseSymbol: '.-'},
     {symbol: 'b', morseSymbol: '-..'},
@@ -94,23 +96,61 @@ translateButton.addEventListener('click', function()  {
 
 });
 
+function playBeep(duration, frequency, volume) {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)(); // Создаем аудиоконтекст
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.frequency.value = frequency; // Частота, например, 440 Гц
+    oscillator.type = "sine"; // Тип волны (sine, square, triangle, sawtooth)
+    gainNode.gain.value = volume; // Громкость
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.start();
+
+    // Плавное затухание
+    const currentTime = audioContext.currentTime;
+    gainNode.gain.setValueAtTime(volume, currentTime); // Установить начальную громкость
+    gainNode.gain.exponentialRampToValueAtTime(0.001, currentTime + duration / 1000); // Плавное затухание
+
+    oscillator.stop(audioContext.currentTime + duration / 1000); // Остановить звук через duration в секундах
+}
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+clearButton.addEventListener('click', function()  {
+    input.value = '';
+    output.innerText = '';
+    input.focus();
+    stopMorseReading = true;
+})
+
 async function readMorse(morseText) {
+    
+    if (stopMorseReading) {
+        stopMorseReading = false;
+        return; // Прекращаем выполнение функции
+    }
+    
     if (index >= morseText.length) return; // Если дошли до конца текста
+   
 
     const char = morseText[index];
     let delay = 0;
 
     if (char === '.') {
         body.style.backgroundImage = "url('2.jpg')";
-        dotSound.play();
+        playBeep(300, 528, 0.2);
+     
         delay = 300; // Пауза для точки
     } else if (char === '-') {
         body.style.backgroundImage = "url('2.jpg')";
-        dashSound.play();
+        playBeep(900, 528, 0.2);
+      
         delay = 900; // Пауза для тире
     } else if (char === ' ') {
         body.style.backgroundImage = "url('1.jpg')";
