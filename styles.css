@@ -8,7 +8,7 @@
 body {
     padding: 0;
     margin: 0;
-    background-color: gray;
+    background-color: rgb(82, 85, 69);
     display: flex;
     justify-content: space-between;
     flex-direction: column;
@@ -18,18 +18,15 @@ body {
     height: 100vh;
     background-image: url('1.jpg');
     background-size: cover; 
+    background-position-x: center;
     background-repeat: no-repeat;
-   
-
 }
 
 button {
-    position: absolute;
+    height: 70px;
     transform-origin: 50% 50%;
-    top: 60px;
-    left: 570px;
     background-color: rgb(93, 188, 144);
-    border-radius: 10px;
+    border-radius: 20px;
 }
 
 
@@ -48,11 +45,8 @@ button {
     position: absolute;
     bottom: 0;
     font-size: 50px;
-    padding-top: -300px;
-    width: 100%;
+    width: 100vw;
     height: 55px;
     opacity: 80%;
     background-color:bisque;
-    
-    
 }
