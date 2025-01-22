@@ -5,8 +5,8 @@ let clearButton = document.getElementById('clear_button');
 let body = document.getElementById('body');
 let stopMorseReading = false;
 let index = 0;
-/*let dotSound = new Audio('5soundpip.mp3')
-let dashSound = new Audio('3soundpip.mp3')*/
+let dotSound = new Audio('dot3.mp3')
+let dashSound = new Audio('dash3.mp3')
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 const symbols = [
     {symbol: 'a', morseSymbol: '.-'},
@@ -97,27 +97,7 @@ translateButton.addEventListener('click', function()  {
 
 });
 
-function playBeep(duration, frequency, volume) {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)(); // Создаем аудиоконтекст
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
 
-    oscillator.frequency.value = frequency; // Частота, например, 440 Гц
-    oscillator.type = "sine"; // Тип волны (sine, square, triangle, sawtooth)
-    gainNode.gain.value = volume; // Громкость
-
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-
-    oscillator.start();
-
-    // Плавное затухание
-    const currentTime = audioContext.currentTime;
-    gainNode.gain.setValueAtTime(volume, currentTime); // Установить начальную громкость
-    gainNode.gain.exponentialRampToValueAtTime(0.001, currentTime + duration / 1000); // Плавное затухание
-
-    oscillator.stop(audioContext.currentTime + duration / 1000); // Остановить звук через duration в секундах
-}
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -145,13 +125,13 @@ async function readMorse(morseText) {
 
     if (char === '.') {
         body.style.backgroundImage = "url('2.jpg')";
-        playBeep(300, 528, 0.2);
-     
+       
+     dotSound.play();
         delay = 300; // Пауза для точки
     } else if (char === '-') {
         body.style.backgroundImage = "url('2.jpg')";
-        playBeep(900, 528, 0.2);
-      
+     
+       dashSound.play();
         delay = 900; // Пауза для тире
     } else if (char === ' ') {
         body.style.backgroundImage = "url('1.jpg')";
