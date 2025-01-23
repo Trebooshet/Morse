@@ -4,6 +4,8 @@ let translateButton = document.getElementById('translate_button');
 let clearButton = document.getElementById('clear_button');
 let body = document.getElementById('body');
 let currentReadingId = 0;
+let audioContext;
+let isAudioInitialized = false;
 
 // Инициализация AudioContext для генерации звуков
 let audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -79,6 +81,7 @@ document.addEventListener('keydown', function (event) {
 });
 
 translateButton.addEventListener('click', function () {
+    initializeAudioContext();
     const inputText = input.value.toLowerCase();
     let morseText = '';
 
@@ -95,6 +98,7 @@ translateButton.addEventListener('click', function () {
 });
 
 clearButton.addEventListener('click', function () {
+    initializeAudioContext();
     input.value = '';
     output.innerText = '';
     input.focus();
@@ -166,3 +170,12 @@ function playSound(frequency, duration, volume = 0.3) {
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+
+function initializeAudioContext() {
+    if (!isAudioInitialized) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        isAudioInitialized = true;
+    }
+}
+
