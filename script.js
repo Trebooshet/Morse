@@ -106,7 +106,7 @@ clearButton.addEventListener('click', function () {
 
 async function readMorse(morseText, readingId) {
     for (let i = 0; i < morseText.length; i++) {
-        if (readingId !== currentReadingId) return;
+        if (readingId !== currentReadingId) return; // Прекращаем чтение, если ID не совпадает
 
         const char = morseText[i];
 
@@ -121,7 +121,8 @@ async function readMorse(morseText, readingId) {
             await sleep(2100); // Длительность паузы между словами
         }
 
-        body.style.backgroundImage = "url('11.jpg')"; // Возвращаем фон
+        // Возвращаем фон в любом случае после воспроизведения
+        body.style.backgroundImage = "url('11.jpg')";
         await sleep(300); // Пауза между символами
     }
 }
@@ -129,20 +130,18 @@ async function readMorse(morseText, readingId) {
 function playSound(sound, duration) {
     return new Promise((resolve) => {
         sound.currentTime = 0;
-        sound.play();
-        sound.addEventListener('ended', resolve, { once: true });
 
-        // Если звук длится дольше, чем нужно, останавливаем вручную
-        setTimeout(() => {
-            sound.pause();
-            resolve();
-        }, duration);
+        // Обрабатываем событие окончания звука
+        sound.addEventListener('play', () => {
+            setTimeout(() => {
+                resolve(); // Продолжаем после завершения звука
+            }, duration);
+        });
+
+        sound.play();
     });
 }
-
-
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-
