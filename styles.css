@@ -75,6 +75,9 @@ body {
     max-height: 30vh;
     opacity: 90%;
     border-radius: 20px 20px 0 0;
-    background-color:bisque;
+    background-color: bisque;
+    word-break: normal;
+    white-space: normal; 
+    overflow-wrap: normal;
 }
 
