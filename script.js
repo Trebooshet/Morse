@@ -50,7 +50,40 @@ const symbols = [
     { symbol: '8', morseSymbol: '---··' },
     { symbol: '9', morseSymbol: '----·' },
     { symbol: '0', morseSymbol: '-----' },
-    { symbol: ' ', morseSymbol: ' ' }
+    { symbol: ' ', morseSymbol: ' ' },
+    { symbol: 'а', morseSymbol: '·-' },
+    { symbol: 'б', morseSymbol: '-···' },
+    { symbol: 'в', morseSymbol: '·--' },
+    { symbol: 'г', morseSymbol: '--·' },
+    { symbol: 'д', morseSymbol: '-··' },
+    { symbol: 'е', morseSymbol: '·' },
+    { symbol: 'ж', morseSymbol: '···-' },
+    { symbol: 'з', morseSymbol: '--··' },
+    { symbol: 'и', morseSymbol: '··' },
+    { symbol: 'й', morseSymbol: '·---' },
+    { symbol: 'к', morseSymbol: '-·-' },
+    { symbol: 'л', morseSymbol: '·-··' },
+    { symbol: 'м', morseSymbol: '--' },
+    { symbol: 'н', morseSymbol: '-·' },
+    { symbol: 'о', morseSymbol: '---' },
+    { symbol: 'п', morseSymbol: '·--·' },
+    { symbol: 'р', morseSymbol: '·-·' },
+    { symbol: 'с', morseSymbol: '···' },
+    { symbol: 'т', morseSymbol: '-' },
+    { symbol: 'у', morseSymbol: '··-' },
+    { symbol: 'ф', morseSymbol: '··-·' },
+    { symbol: 'х', morseSymbol: '····' },
+    { symbol: 'ц', morseSymbol: '-·-·' },
+    { symbol: 'ч', morseSymbol: '---·' },
+    { symbol: 'ш', morseSymbol: '----' },
+    { symbol: 'щ', morseSymbol: '--·-' },
+    { symbol: 'ъ', morseSymbol: '--·--' },
+    { symbol: 'ы', morseSymbol: '-·--' },
+    { symbol: 'ь', morseSymbol: '-··-' },
+    { symbol: 'э', morseSymbol: '··-··' },
+    { symbol: 'ю', morseSymbol: '··--' },
+    { symbol: 'я', morseSymbol: '·-·-' },
+
 ];
 
 input.addEventListener('keydown', function (event) {
@@ -126,14 +159,14 @@ async function readMorse(morseText, readingId) {
                 if (readingId !== currentReadingId) return;
 
                 if (char === '·') {
-                    body.style.backgroundImage = "url('2.jpg')";
+                    body.style.backgroundImage = "url('22.jpg')";
                     await playSound(dotSound, 300); // Длительность точки
                 } else if (char === '-') {
-                    body.style.backgroundImage = "url('2.jpg')";
+                    body.style.backgroundImage = "url('22.jpg')";
                     await playSound(dashSound, 900); // Длительность тире
                 }
 
-                body.style.backgroundImage = "url('1.jpg')"; // Возвращаем фон
+                body.style.backgroundImage = "url('11.jpg')"; // Возвращаем фон
 
                 // Пауза между символами (кроме последнего в букве)
                 if (i < letter.length - 1) {
