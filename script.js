@@ -124,17 +124,17 @@ async function readMorse(morseText) {
     let delay = 0;
 
     if (char === '.') {
-        body.style.backgroundImage = "url('2.jpg')";
+        body.style.backgroundImage = "url('200.jpg')";
        
      dotSound.play();
         delay = 300; // Пауза для точки
     } else if (char === '-') {
-        body.style.backgroundImage = "url('2.jpg')";
+        body.style.backgroundImage = "url('200.jpg')";
      
        dashSound.play();
         delay = 900; // Пауза для тире
     } else if (char === ' ') {
-        body.style.backgroundImage = "url('1.jpg')";
+        body.style.backgroundImage = "url('100.jpg')";
         delay = 2100; // Пауза для пробела
     }
 
@@ -145,7 +145,7 @@ async function readMorse(morseText) {
     
 
     // Обновление фона
-    body.style.backgroundImage = "url('1.jpg')";
+    body.style.backgroundImage = "url('100.jpg')";
     
     index++; // Увеличиваем индекс
 
