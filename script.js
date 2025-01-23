@@ -139,7 +139,7 @@ translateButton.addEventListener('click', function () {
     }
 
     output.innerText = morseText.trim();
-    input.focus();
+    input.blur();
 
     currentReadingId++;
     readMorse(morseText.trim(), currentReadingId);
