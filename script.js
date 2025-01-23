@@ -7,7 +7,9 @@ let currentReadingId = 0;
 let audioContext;
 let isAudioInitialized = false;
 
-
+// Загрузка звуков
+let dotSound = new Audio('dot3.mp3');
+let dashSound = new Audio('dash3.mp3');
 
 const symbols = [
     { symbol: 'a', morseSymbol: '·-' },
@@ -51,6 +53,8 @@ const symbols = [
 
 input.addEventListener('keydown', function (event) {
     const allowedSymbols = symbols.map(item => item.symbol);
+
+    
 
     // Запрещаем ввод второго пробела подряд
     if (event.key === ' ' && input.value.endsWith(' ')) {
@@ -121,10 +125,10 @@ async function readMorse(morseText, readingId) {
 
                 if (char === '·') {
                     body.style.backgroundImage = "url('22.jpg')";
-                    await playSound(440, 300, 0.3); // Точка: частота 528 Гц, длительность 300 мс
+                    await playSound(dotSound, 300); // Длительность точки
                 } else if (char === '-') {
                     body.style.backgroundImage = "url('22.jpg')";
-                    await playSound(440, 900, 0.3); // Тире: частота 528 Гц, длительность 900 мс
+                    await playSound(dashSound, 900); // Длительность тире
                 }
 
                 body.style.backgroundImage = "url('11.jpg')"; // Возвращаем фон
@@ -144,23 +148,12 @@ async function readMorse(morseText, readingId) {
     }
 }
 
-function playSound(frequency, duration, volume = 0.3) {
+function playSound(sound, duration) {
     return new Promise((resolve) => {
-        const oscillator = audioContext.createOscillator(); // Создаем генератор звука
-        const gainNode = audioContext.createGain(); // Создаем узел громкости
-
-        oscillator.type = 'sine'; // Тип волны: синусоидальная
-        oscillator.frequency.value = frequency; // Частота звука
-
-        gainNode.gain.value = volume; // Громкость
-
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-
-        oscillator.start();
-
+        sound.currentTime = 0;
+        sound.play();
         setTimeout(() => {
-            oscillator.stop(); // Останавливаем генератор звука
+            sound.pause();
             resolve();
         }, duration);
     });
@@ -169,6 +162,7 @@ function playSound(frequency, duration, volume = 0.3) {
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
 
 
 function initializeAudioContext() {
