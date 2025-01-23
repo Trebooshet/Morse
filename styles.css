@@ -27,7 +27,7 @@ body {
 #translate_button {
     position: fixed;
     font-size: 30px;
-    margin-left: -130px;
+    margin-left: -150px;
     top: 10vh;
     height: 55px;
     transform-origin: 50% 50%;
