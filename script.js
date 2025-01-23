@@ -1,71 +1,70 @@
-
 let input = document.getElementById('input');
 let output = document.getElementById('output');
 let translateButton = document.getElementById('translate_button');
 let clearButton = document.getElementById('clear_button');
 let body = document.getElementById('body');
 let currentReadingId = 0;
+
+// Загрузка звуков
 let dotSound = new Audio('dot3.mp3');
 let dashSound = new Audio('dash3.mp3');
+
 const symbols = [
-    {symbol: 'a', morseSymbol: '·-'},
-    {symbol: 'b', morseSymbol: '-···'},
-    {symbol: 'c', morseSymbol: '-·-·'},
-    {symbol: 'd', morseSymbol: '-·'},
-    {symbol: 'e', morseSymbol: '·'},
-    {symbol: 'f', morseSymbol: '··-·'},
-    {symbol: 'g', morseSymbol: '--·'},
-    {symbol: 'h', morseSymbol: '····'},
-    {symbol: 'i', morseSymbol: '··'},
-    {symbol: 'j', morseSymbol: '·---'},
-    {symbol: 'k', morseSymbol: '-·-'},
-    {symbol: 'l', morseSymbol: '·-··'},
-    {symbol: 'm', morseSymbol: '--'},
-    {symbol: 'n', morseSymbol: '-·'},
-    {symbol: 'o', morseSymbol: '---'},
-    {symbol: 'p', morseSymbol: '·--·'},
-    {symbol: 'q', morseSymbol: '--·-'},
-    {symbol: 'r', morseSymbol: '·-·'},
-    {symbol: 's', morseSymbol: '···'},
-    {symbol: 't', morseSymbol: '-'},
-    {symbol: 'u', morseSymbol: '··-'},
-    {symbol: 'v', morseSymbol: '···-'},
-    {symbol: 'w', morseSymbol: '·--'},
-    {symbol: 'x', morseSymbol: '-··-'},
-    {symbol: 'y', morseSymbol: '-·--'},
-    {symbol: 'z', morseSymbol: '--··'},
-    {symbol: '1', morseSymbol: '·----'},
-    {symbol: '2', morseSymbol: '··---'},
-    {symbol: '3', morseSymbol: '···--'},
-    {symbol: '4', morseSymbol: '····-'},
-    {symbol: '5', morseSymbol: '·····'},
-    {symbol: '6', morseSymbol: '-····'},
-    {symbol: '7', morseSymbol: '--···'},
-    {symbol: '8', morseSymbol: '---··'},
-    {symbol: '9', morseSymbol: '----·'},
-    {symbol: '0', morseSymbol: '-----'},
-    {symbol: ' ', morseSymbol: ' '}
+    { symbol: 'a', morseSymbol: '·-' },
+    { symbol: 'b', morseSymbol: '-···' },
+    { symbol: 'c', morseSymbol: '-·-·' },
+    { symbol: 'd', morseSymbol: '-·' },
+    { symbol: 'e', morseSymbol: '·' },
+    { symbol: 'f', morseSymbol: '··-·' },
+    { symbol: 'g', morseSymbol: '--·' },
+    { symbol: 'h', morseSymbol: '····' },
+    { symbol: 'i', morseSymbol: '··' },
+    { symbol: 'j', morseSymbol: '·---' },
+    { symbol: 'k', morseSymbol: '-·-' },
+    { symbol: 'l', morseSymbol: '·-··' },
+    { symbol: 'm', morseSymbol: '--' },
+    { symbol: 'n', morseSymbol: '-·' },
+    { symbol: 'o', morseSymbol: '---' },
+    { symbol: 'p', morseSymbol: '·--·' },
+    { symbol: 'q', morseSymbol: '--·-' },
+    { symbol: 'r', morseSymbol: '·-·' },
+    { symbol: 's', morseSymbol: '···' },
+    { symbol: 't', morseSymbol: '-' },
+    { symbol: 'u', morseSymbol: '··-' },
+    { symbol: 'v', morseSymbol: '···-' },
+    { symbol: 'w', morseSymbol: '·--' },
+    { symbol: 'x', morseSymbol: '-··-' },
+    { symbol: 'y', morseSymbol: '-·--' },
+    { symbol: 'z', morseSymbol: '--··' },
+    { symbol: '1', morseSymbol: '·----' },
+    { symbol: '2', morseSymbol: '··---' },
+    { symbol: '3', morseSymbol: '···--' },
+    { symbol: '4', morseSymbol: '····-' },
+    { symbol: '5', morseSymbol: '·····' },
+    { symbol: '6', morseSymbol: '-····' },
+    { symbol: '7', morseSymbol: '--···' },
+    { symbol: '8', morseSymbol: '---··' },
+    { symbol: '9', morseSymbol: '----·' },
+    { symbol: '0', morseSymbol: '-----' },
+    { symbol: ' ', morseSymbol: ' ' }
 ];
 
 input.addEventListener('keydown', function (event) {
     const allowedSymbols = symbols.map(item => item.symbol);
-    
+
     // Запрещаем ввод второго пробела подряд
     if (event.key === ' ' && input.value.endsWith(' ')) {
         event.preventDefault();
-        input.value = input.value.replace('.', '');
-    } 
+    }
 
-    // Проверяем, если вводится символ, который разрешен
+    // Проверяем, если вводится разрешённый символ
     else if (allowedSymbols.includes(event.key.toLowerCase())) {
         input.value += event.key.toUpperCase();
         event.preventDefault();
-    } 
-    else {
+    } else {
         event.preventDefault(); // Запрещаем ввод других символов
     }
 });
-
 
 document.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
@@ -75,7 +74,6 @@ document.addEventListener('keydown', function (event) {
 
 document.addEventListener('keydown', function (event) {
     if (event.key === 'Backspace') {
-        
         input.value = input.value.substring(0, input.value.length - 1);
     }
 });
@@ -103,38 +101,36 @@ clearButton.addEventListener('click', function () {
     currentReadingId++;
 });
 
-
 async function readMorse(morseText, readingId) {
     for (let i = 0; i < morseText.length; i++) {
-        if (readingId !== currentReadingId) return; // Прекращаем выполнение, если ID изменился
+        if (readingId !== currentReadingId) return;
 
         const char = morseText[i];
 
         if (char === '·') {
             body.style.backgroundImage = "url('22.jpg')";
-            await playSound(dotSound); // Длительность определяется звуком
+            await playSound(dotSound, 300); // Длительность точки
         } else if (char === '-') {
             body.style.backgroundImage = "url('22.jpg')";
-            await playSound(dashSound); // Длительность определяется звуком
+            await playSound(dashSound, 900); // Длительность тире
         } else if (char === ' ') {
             body.style.backgroundImage = "url('11.jpg')";
             await sleep(2100); // Длительность паузы между словами
         }
 
-        // Возвращаем фон обратно
-        body.style.backgroundImage = "url('11.jpg')";
+        body.style.backgroundImage = "url('11.jpg')"; // Возвращаем фон
         await sleep(300); // Пауза между символами
     }
 }
 
-function playSound(sound) {
+function playSound(sound, duration) {
     return new Promise((resolve) => {
-        sound.currentTime = 0; // Начинаем с начала аудиофайла
+        sound.currentTime = 0;
         sound.play();
-
-        sound.addEventListener('ended', () => {
-            resolve(); // Разрешаем промис после завершения воспроизведения
-        }, { once: true });
+        setTimeout(() => {
+            sound.pause();
+            resolve();
+        }, duration);
     });
 }
 
