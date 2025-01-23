@@ -5,10 +5,10 @@ let clearButton = document.getElementById('clear_button');
 let body = document.getElementById('body');
 let currentReadingId = 0;
 
-// Загрузка звуков
-let dotSound = new Audio('dot3.mp3');
-let dashSound = new Audio('dash3.mp3');
+// Инициализация AudioContext для воспроизведения звука
+let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
+// Символы и их представление в Морзе
 const symbols = [
     { symbol: 'a', morseSymbol: '·-' },
     { symbol: 'b', morseSymbol: '-···' },
@@ -49,6 +49,54 @@ const symbols = [
     { symbol: ' ', morseSymbol: ' ' }
 ];
 
+// Функция воспроизведения звука
+async function playSound(audioFile, duration) {
+    const response = await fetch(audioFile);
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+    const source = audioContext.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(audioContext.destination);
+    source.start(0);
+
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            source.stop();
+            resolve();
+        }, duration);
+    });
+}
+
+// Функция воспроизведения Морзе
+async function readMorse(morseText, readingId) {
+    for (let i = 0; i < morseText.length; i++) {
+        if (readingId !== currentReadingId) return;
+
+        const char = morseText[i];
+
+        if (char === '·') {
+            body.style.backgroundImage = "url('22.jpg')";
+            await playSound('dot3.mp3', 300); // Длительность точки
+        } else if (char === '-') {
+            body.style.backgroundImage = "url('22.jpg')";
+            await playSound('dash3.mp3', 900); // Длительность тире
+        } else if (char === ' ') {
+            body.style.backgroundImage = "url('11.jpg')";
+            await sleep(2100); // Длительность паузы между словами
+        }
+
+        body.style.backgroundImage = "url('11.jpg')"; // Возвращаем фон
+        await sleep(300); // Пауза между символами
+    }
+}
+
+// Функция задержки
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Обработчик ввода в поле
 input.addEventListener('keydown', function (event) {
     const allowedSymbols = symbols.map(item => item.symbol);
 
@@ -57,7 +105,7 @@ input.addEventListener('keydown', function (event) {
         event.preventDefault();
     }
 
-    // Проверяем, если вводится разрешённый символ
+    // Проверяем, если вводится символ, который разрешен
     else if (allowedSymbols.includes(event.key.toLowerCase())) {
         input.value += event.key.toUpperCase();
         event.preventDefault();
@@ -66,18 +114,7 @@ input.addEventListener('keydown', function (event) {
     }
 });
 
-document.addEventListener('keydown', function (event) {
-    if (event.key === 'Enter') {
-        translateButton.click();
-    }
-});
-
-document.addEventListener('keydown', function (event) {
-    if (event.key === 'Backspace') {
-        input.value = input.value.substring(0, input.value.length - 1);
-    }
-});
-
+// Обработчик кнопки "Перевести"
 translateButton.addEventListener('click', function () {
     const inputText = input.value.toLowerCase();
     let morseText = '';
@@ -94,6 +131,7 @@ translateButton.addEventListener('click', function () {
     readMorse(morseText.trim(), currentReadingId);
 });
 
+// Обработчик кнопки "Очистить"
 clearButton.addEventListener('click', function () {
     input.value = '';
     output.innerText = '';
@@ -101,57 +139,9 @@ clearButton.addEventListener('click', function () {
     currentReadingId++;
 });
 
-async function readMorse(morseText, readingId) {
-    const words = morseText.split('   '); // Разделяем слова (3 пробела между словами)
-
-    for (const word of words) {
-        if (readingId !== currentReadingId) return;
-
-        const letters = word.split(' '); // Разделяем буквы (1 пробел между буквами)
-
-        for (const letter of letters) {
-            if (readingId !== currentReadingId) return;
-
-            for (let i = 0; i < letter.length; i++) {
-                const char = letter[i];
-                if (readingId !== currentReadingId) return;
-
-                if (char === '·') {
-                    body.style.backgroundImage = "url('22.jpg')";
-                    await playSound(dotSound, 300); // Длительность точки
-                } else if (char === '-') {
-                    body.style.backgroundImage = "url('22.jpg')";
-                    await playSound(dashSound, 900); // Длительность тире
-                }
-
-                body.style.backgroundImage = "url('11.jpg')"; // Возвращаем фон
-
-                // Пауза между символами (кроме последнего в букве)
-                if (i < letter.length - 1) {
-                    await sleep(300); // Пауза между символами
-                }
-            }
-
-            // Пауза между буквами
-            await sleep(900);
-        }
-
-        // Пауза между словами
-        await sleep(2100);
+// Активация AudioContext при первом взаимодействии
+document.addEventListener('click', () => {
+    if (audioContext.state === 'suspended') {
+        audioContext.resume();
     }
-}
-
-function playSound(sound, duration) {
-    return new Promise((resolve) => {
-        sound.currentTime = 0;
-        sound.play();
-        setTimeout(() => {
-            sound.pause();
-            resolve();
-        }, duration);
-    });
-}
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+});
