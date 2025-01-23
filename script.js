@@ -102,24 +102,42 @@ clearButton.addEventListener('click', function () {
 });
 
 async function readMorse(morseText, readingId) {
-    for (let i = 0; i < morseText.length; i++) {
+    const words = morseText.split('   '); // Разделяем слова (3 пробела между словами)
+
+    for (const word of words) {
         if (readingId !== currentReadingId) return;
 
-        const char = morseText[i];
+        const letters = word.split(' '); // Разделяем буквы (1 пробел между буквами)
 
-        if (char === '·') {
-            body.style.backgroundImage = "url('22.jpg')";
-            await playSound(dotSound, 300); // Длительность точки
-        } else if (char === '-') {
-            body.style.backgroundImage = "url('22.jpg')";
-            await playSound(dashSound, 900); // Длительность тире
-        } else if (char === ' ') {
-            body.style.backgroundImage = "url('11.jpg')";
-            await sleep(2100); // Длительность паузы между словами
+        for (const letter of letters) {
+            if (readingId !== currentReadingId) return;
+
+            for (let i = 0; i < letter.length; i++) {
+                const char = letter[i];
+                if (readingId !== currentReadingId) return;
+
+                if (char === '·') {
+                    body.style.backgroundImage = "url('22.jpg')";
+                    await playSound(dotSound, 300); // Длительность точки
+                } else if (char === '-') {
+                    body.style.backgroundImage = "url('22.jpg')";
+                    await playSound(dashSound, 900); // Длительность тире
+                }
+
+                body.style.backgroundImage = "url('11.jpg')"; // Возвращаем фон
+
+                // Пауза между символами (кроме последнего в букве)
+                if (i < letter.length - 1) {
+                    await sleep(300); // Пауза между символами
+                }
+            }
+
+            // Пауза между буквами
+            await sleep(900);
         }
 
-        body.style.backgroundImage = "url('11.jpg')"; // Возвращаем фон
-        await sleep(300); // Пауза между символами
+        // Пауза между словами
+        await sleep(2100);
     }
 }
 
