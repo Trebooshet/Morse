@@ -106,39 +106,35 @@ clearButton.addEventListener('click', function () {
 
 async function readMorse(morseText, readingId) {
     for (let i = 0; i < morseText.length; i++) {
-        if (readingId !== currentReadingId) return; // Прекращаем чтение, если ID не совпадает
+        if (readingId !== currentReadingId) return; // Прекращаем выполнение, если ID изменился
 
         const char = morseText[i];
 
         if (char === '·') {
             body.style.backgroundImage = "url('22.jpg')";
-            await playSound(dotSound, 300); // Длительность точки
+            await playSound(dotSound); // Длительность определяется звуком
         } else if (char === '-') {
             body.style.backgroundImage = "url('22.jpg')";
-            await playSound(dashSound, 900); // Длительность тире
+            await playSound(dashSound); // Длительность определяется звуком
         } else if (char === ' ') {
             body.style.backgroundImage = "url('11.jpg')";
             await sleep(2100); // Длительность паузы между словами
         }
 
-        // Возвращаем фон в любом случае после воспроизведения
+        // Возвращаем фон обратно
         body.style.backgroundImage = "url('11.jpg')";
         await sleep(300); // Пауза между символами
     }
 }
 
-function playSound(sound, duration) {
+function playSound(sound) {
     return new Promise((resolve) => {
-        sound.currentTime = 0;
-
-        // Обрабатываем событие окончания звука
-        sound.addEventListener('play', () => {
-            setTimeout(() => {
-                resolve(); // Продолжаем после завершения звука
-            }, duration);
-        });
-
+        sound.currentTime = 0; // Начинаем с начала аудиофайла
         sound.play();
+
+        sound.addEventListener('ended', () => {
+            resolve(); // Разрешаем промис после завершения воспроизведения
+        }, { once: true });
     });
 }
 
