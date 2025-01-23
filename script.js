@@ -126,14 +126,14 @@ async function readMorse(morseText, readingId) {
                 if (readingId !== currentReadingId) return;
 
                 if (char === '·') {
-                    body.style.backgroundImage = "url('22.jpg')";
+                    body.style.backgroundImage = "url('2.jpg')";
                     await playSound(dotSound, 300); // Длительность точки
                 } else if (char === '-') {
-                    body.style.backgroundImage = "url('22.jpg')";
+                    body.style.backgroundImage = "url('2.jpg')";
                     await playSound(dashSound, 900); // Длительность тире
                 }
 
-                body.style.backgroundImage = "url('11.jpg')"; // Возвращаем фон
+                body.style.backgroundImage = "url('1.jpg')"; // Возвращаем фон
 
                 // Пауза между символами (кроме последнего в букве)
                 if (i < letter.length - 1) {
