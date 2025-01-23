@@ -96,16 +96,16 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// Обработчик ввода в поле
 input.addEventListener('keydown', function (event) {
     const allowedSymbols = symbols.map(item => item.symbol);
 
     // Запрещаем ввод второго пробела подряд
     if (event.key === ' ' && input.value.endsWith(' ')) {
         event.preventDefault();
+        input.value = input.value.replace('.', '');
     }
 
-    // Проверяем, если вводится символ, который разрешен
+    // Проверяем, если вводится разрешённый символ
     else if (allowedSymbols.includes(event.key.toLowerCase())) {
         input.value += event.key.toUpperCase();
         event.preventDefault();
@@ -113,6 +113,20 @@ input.addEventListener('keydown', function (event) {
         event.preventDefault(); // Запрещаем ввод других символов
     }
 });
+
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+        translateButton.click();
+    }
+});
+
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Backspace') {
+        input.value = input.value.substring(0, input.value.length - 1);
+    }
+});
+
+
 
 // Обработчик кнопки "Перевести"
 translateButton.addEventListener('click', function () {
