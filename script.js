@@ -1,101 +1,144 @@
+
 let input = document.getElementById('input');
 let output = document.getElementById('output');
 let translateButton = document.getElementById('translate_button');
 let clearButton = document.getElementById('clear_button');
 let body = document.getElementById('body');
-let stopMorseReading = false;
-let index = 0;
-let dotSound = new Audio('dot3.mp3')
-let dashSound = new Audio('dash3.mp3')
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+let currentReadingId = 0;
+let dotSound = new Audio('dot3.mp3');
+let dashSound = new Audio('dash3.mp3');
 const symbols = [
-    {symbol: 'a', morseSymbol: '.-'},
-    {symbol: 'b', morseSymbol: '-..'},
-    {symbol: 'c', morseSymbol: '-.-.'},
-    {symbol: 'd', morseSymbol: '-..'},
-    {symbol: 'e', morseSymbol: '.'},
-    {symbol: 'f', morseSymbol: '..-.'},
-    {symbol: 'g', morseSymbol: '--.'},
-    {symbol: 'h', morseSymbol: '....'},
-    {symbol: 'i', morseSymbol: '..'},
-    {symbol: 'j', morseSymbol: '.---'},
-    {symbol: 'k', morseSymbol: '-.-'},
-    {symbol: 'l', morseSymbol: '.-..'},
+    {symbol: 'a', morseSymbol: '·-'},
+    {symbol: 'b', morseSymbol: '-···'},
+    {symbol: 'c', morseSymbol: '-·-·'},
+    {symbol: 'd', morseSymbol: '-·'},
+    {symbol: 'e', morseSymbol: '·'},
+    {symbol: 'f', morseSymbol: '··-·'},
+    {symbol: 'g', morseSymbol: '--·'},
+    {symbol: 'h', morseSymbol: '····'},
+    {symbol: 'i', morseSymbol: '··'},
+    {symbol: 'j', morseSymbol: '·---'},
+    {symbol: 'k', morseSymbol: '-·-'},
+    {symbol: 'l', morseSymbol: '·-··'},
     {symbol: 'm', morseSymbol: '--'},
-    {symbol: 'n', morseSymbol: '-.'},
+    {symbol: 'n', morseSymbol: '-·'},
     {symbol: 'o', morseSymbol: '---'},
-    {symbol: 'p', morseSymbol: '.--.'},
-    {symbol: 'q', morseSymbol: '--.-'},
-    {symbol: 'r', morseSymbol: '.-.'},
-    {symbol: 's', morseSymbol: '...'},
+    {symbol: 'p', morseSymbol: '·--·'},
+    {symbol: 'q', morseSymbol: '--·-'},
+    {symbol: 'r', morseSymbol: '·-·'},
+    {symbol: 's', morseSymbol: '···'},
     {symbol: 't', morseSymbol: '-'},
-    {symbol: 'u', morseSymbol: '..-'},
-    {symbol: 'v', morseSymbol: '...-'},
-    {symbol: 'w', morseSymbol: '.--'},
-    {symbol: 'x', morseSymbol: '-..-'},
-    {symbol: 'y', morseSymbol: '-.--'},
-    {symbol: 'z', morseSymbol: '--..'},
-    {symbol: '1', morseSymbol: '.----'},
-    {symbol: '2', morseSymbol: '..---'},
-    {symbol: '3', morseSymbol: '...--'},
-    {symbol: '4', morseSymbol: '....-'},
-    {symbol: '5', morseSymbol: '.....'},
-    {symbol: '6', morseSymbol: '-....'},
-    {symbol: '7', morseSymbol: '--...'},
-    {symbol: '8', morseSymbol: '---..'},
-    {symbol: '9', morseSymbol: '----.'},
+    {symbol: 'u', morseSymbol: '··-'},
+    {symbol: 'v', morseSymbol: '···-'},
+    {symbol: 'w', morseSymbol: '·--'},
+    {symbol: 'x', morseSymbol: '-··-'},
+    {symbol: 'y', morseSymbol: '-·--'},
+    {symbol: 'z', morseSymbol: '--··'},
+    {symbol: '1', morseSymbol: '·----'},
+    {symbol: '2', morseSymbol: '··---'},
+    {symbol: '3', morseSymbol: '···--'},
+    {symbol: '4', morseSymbol: '····-'},
+    {symbol: '5', morseSymbol: '·····'},
+    {symbol: '6', morseSymbol: '-····'},
+    {symbol: '7', morseSymbol: '--···'},
+    {symbol: '8', morseSymbol: '---··'},
+    {symbol: '9', morseSymbol: '----·'},
     {symbol: '0', morseSymbol: '-----'},
-    {symbol: ' ', morseSymbol: ' '},
- 
+    {symbol: ' ', morseSymbol: ' '}
 ];
 
-input.addEventListener('keydown', function(event) {
-   
+input.addEventListener('keydown', function (event) {
     const allowedSymbols = symbols.map(item => item.symbol);
+    
+    // Запрещаем ввод второго пробела подряд
+    if (event.key === ' ' && input.value.endsWith(' ')) {
+        event.preventDefault();
+        input.value = input.value.replace('.', '');
+    } 
 
-    if (allowedSymbols.includes(event.key) || allowedSymbols.includes(event.key.toUpperCase())) {
+    // Проверяем, если вводится символ, который разрешен
+    else if (allowedSymbols.includes(event.key.toLowerCase())) {
         input.value += event.key.toUpperCase();
         event.preventDefault();
-    } else {
-        event.preventDefault();
+    } 
+    else {
+        event.preventDefault(); // Запрещаем ввод других символов
     }
-     
 });
 
-document.addEventListener('keydown', function(event) {
+
+document.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
-        translateButton.click()
+        translateButton.click();
     }
-})
+});
 
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function (event) {
     if (event.key === 'Backspace') {
-        input.value = input.value.substring(0, input.value.length - 1)
+        
+        input.value = input.value.substring(0, input.value.length - 1);
     }
-})
+});
 
-translateButton.addEventListener('click', function()  {
+translateButton.addEventListener('click', function () {
     const inputText = input.value.toLowerCase();
     let morseText = '';
-    
 
     for (const character of inputText) {
-        const lowerCharacter = character.toLowerCase();
-        const match = symbols.find(item => item.symbol === lowerCharacter);
-        if (match) {
-            morseText += match.morseSymbol + '\u00A0';
-            
-        } else {
-            morseText += '';
-        }
+        const match = symbols.find(item => item.symbol === character);
+        morseText += match ? match.morseSymbol + '\u00A0' : '';
     }
 
-    output.innerText = morseText;
-    index = 0;
+    output.innerText = morseText.trim();
     input.focus();
-    readMorse(morseText);
 
+    currentReadingId++;
+    readMorse(morseText.trim(), currentReadingId);
 });
+
+clearButton.addEventListener('click', function () {
+    input.value = '';
+    output.innerText = '';
+    input.focus();
+    currentReadingId++;
+});
+
+
+async function readMorse(morseText, readingId) {
+    for (let i = 0; i < morseText.length; i++) {
+        if (readingId !== currentReadingId) return;
+
+        const char = morseText[i];
+
+        if (char === '·') {
+            body.style.backgroundImage = "url('22.jpg')";
+            await playSound(dotSound, 300); // Длительность точки
+        } else if (char === '-') {
+            body.style.backgroundImage = "url('22.jpg')";
+            await playSound(dashSound, 900); // Длительность тире
+        } else if (char === ' ') {
+            body.style.backgroundImage = "url('11.jpg')";
+            await sleep(2100); // Длительность паузы между словами
+        }
+
+        body.style.backgroundImage = "url('11.jpg')"; // Возвращаем фон
+        await sleep(300); // Пауза между символами
+    }
+}
+
+function playSound(sound, duration) {
+    return new Promise((resolve) => {
+        sound.currentTime = 0;
+        sound.play();
+        sound.addEventListener('ended', resolve, { once: true });
+
+        // Если звук длится дольше, чем нужно, останавливаем вручную
+        setTimeout(() => {
+            sound.pause();
+            resolve();
+        }, duration);
+    });
+}
 
 
 
@@ -103,54 +146,3 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-clearButton.addEventListener('click', function()  {
-    input.value = '';
-    output.innerText = '';
-    input.focus();
-    stopMorseReading = true;
-})
-
-async function readMorse(morseText) {
-    
-    if (stopMorseReading) {
-        stopMorseReading = false;
-        return; // Прекращаем выполнение функции
-    }
-    
-    if (index >= morseText.length) return; // Если дошли до конца текста
-   
-
-    const char = morseText[index];
-    let delay = 0;
-
-    if (char === '.') {
-        body.style.backgroundImage = "url('200.jpg')";
-       
-     dotSound.play();
-        delay = 300; // Пауза для точки
-    } else if (char === '-') {
-        body.style.backgroundImage = "url('200.jpg')";
-     
-       dashSound.play();
-        delay = 900; // Пауза для тире
-    } else if (char === ' ') {
-        body.style.backgroundImage = "url('100.jpg')";
-        delay = 2100; // Пауза для пробела
-    }
-
-
-    // Задержка
-    await sleep(delay);
-
-    
-
-    // Обновление фона
-    body.style.backgroundImage = "url('100.jpg')";
-    
-    index++; // Увеличиваем индекс
-
-    // Запуск функции снова, но с задержкой между символами
-    await sleep(300); // Ожидаем перед тем как вызвать следующий символ
-    readMorse(morseText);
-    
-}
