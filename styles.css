@@ -1,47 +1,51 @@
 * {
     box-sizing: border-box;
-    font-size: 30px;
+    
     text-align: center;
-    align-content: center;
+    
 }
 
 body {
     padding: 0;
     margin: 0;
     background-color: rgb(82, 85, 69);
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
+   
 }
 
 #body {
     height: 100vh;
-    background-image: url('100.jpg');
-    background-size: contain; 
-    background-position-x: center;
+    transform-origin: 50% 50%;
+   
+
+    background-image: url('11.jpg');
+    background-size: cover; 
+    background-position: center;
     background-repeat: no-repeat;
+    align-content: center;
 }
 
 #translate_button {
-    height: 70px;
+    position: fixed;
+    font-size: 30px;
+    margin-left: -120px;
+    top: 10vh;
+    height: 55px;
     transform-origin: 50% 50%;
-    background-color: rgb(93, 188, 144);
-    border-radius: 20px;
-    border: 1px solid black;
-    color: black;
-    margin-top: 70px;
-    
+    background-color: rgb(59, 128, 96);
+    border-radius: 40px;
 }
 
 #clear_button {
-    height: 70px;
+    position: fixed;
+    top: 10vh;
+    margin-left: 30px;
+    height: 55px;
+    font-size: 30px;
     transform-origin: 50% 50%;
-    background-color: rgb(171, 188, 93);
-    border-radius: 20px;
-    border: 1px solid black;
-    color: black;
-    margin-top: 70px;
+    background-color: rgb(186, 177, 84);
+    border-radius: 40px;
 }
+
 
 
 #input {
@@ -50,6 +54,8 @@ body {
     top: 0;
     left: 0;
     width: 100%;
+    font-size: 25px;
+    
     background-color:bisque;
     opacity: 80%;
     outline: none;
@@ -58,9 +64,12 @@ body {
 #output {
     position: absolute;
     bottom: 0;
-    font-size: 50px;
+    font-size: 45px;
     width: 100vw;
-    height: 55px;
-    opacity: 80%;
+    height: auto;
+    padding: 0;
+    max-height: 30vh;
+    opacity: 90%;
     background-color:bisque;
 }
+
