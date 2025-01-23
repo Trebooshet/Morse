@@ -7,6 +7,7 @@ body {
     padding: 0;
     margin: 0;
     background-color: rgb(82, 85, 69);
+    
    
 }
 
@@ -28,7 +29,7 @@ body {
     height: 55px;
     width: 140px;
     transform-origin: 50% 50%;
-    background-color: rgb(59, 128, 96);
+    background: linear-gradient(90deg, rgb(59, 128, 96),rgb(67, 149, 111) );
     border-radius: 40px;
     color: black;
     border: 1px solid black;
@@ -43,7 +44,7 @@ body {
     width: 140px;
     font-size: 30px;
     transform-origin: 50% 50%;
-    background-color: rgb(186, 177, 84);
+    background: linear-gradient(90deg,  rgb(186, 177, 84),rgb(206, 197, 93) );
     border-radius: 40px;
     color: black;
     border: 1px solid black;
@@ -69,15 +70,14 @@ body {
     position: fixed;
     bottom: 0;
     font-size: 45px;
+    word-break: normal;
+    white-space: normal; 
+    overflow-wrap: normal;
     width: 100vw;
     height: auto;
     padding: 0;
     max-height: 30vh;
     opacity: 90%;
     border-radius: 20px 20px 0 0;
-    background-color: bisque;
-    word-break: normal;
-    white-space: normal; 
-    overflow-wrap: normal;
+    background-color:bisque;
 }
-
