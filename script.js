@@ -7,8 +7,7 @@ let currentReadingId = 0;
 let audioContext;
 let isAudioInitialized = false;
 
-// Инициализация AudioContext для генерации звуков
-let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
 
 const symbols = [
     { symbol: 'a', morseSymbol: '·-' },
