@@ -169,6 +169,8 @@ function initializeAudioContext() {
     if (!isAudioInitialized) {
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
         isAudioInitialized = true;
+        let dummySound = new Audio();
+        dummySound.play();
     }
 }
 
