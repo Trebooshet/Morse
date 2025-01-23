@@ -7,9 +7,11 @@ let currentReadingId = 0;
 let audioContext;
 let isAudioInitialized = false;
 
-// Загрузка звуков
+let dotSound = document.getElementById('dotSound');
+let dashSound = document.getElementById('dashSound');
+/*
 let dotSound = new Audio('dot3.mp3');
-let dashSound = new Audio('dash3.mp3');
+let dashSound = new Audio('dash3.mp3');*/
 
 const symbols = [
     { symbol: 'a', morseSymbol: '·-' },
@@ -169,8 +171,6 @@ function initializeAudioContext() {
     if (!isAudioInitialized) {
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
         isAudioInitialized = true;
-        let dummySound = new Audio();
-        dummySound.play();
     }
 }
 
