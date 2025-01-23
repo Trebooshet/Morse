@@ -27,23 +27,27 @@ body {
 #translate_button {
     position: fixed;
     font-size: 30px;
-    margin-left: -120px;
+    margin-left: -130px;
     top: 10vh;
     height: 55px;
     transform-origin: 50% 50%;
     background-color: rgb(59, 128, 96);
     border-radius: 40px;
+    color: black;
+    border: 1px solid black;
 }
 
 #clear_button {
     position: fixed;
     top: 10vh;
-    margin-left: 30px;
+    margin-left: 40px;
     height: 55px;
     font-size: 30px;
     transform-origin: 50% 50%;
     background-color: rgb(186, 177, 84);
     border-radius: 40px;
+    color: black;
+    border: 1px solid black;
 }
 
 
